@@ -7,6 +7,9 @@ import xml.etree.ElementTree as ET
 import wx.html
 import sys
 
+ID_SETTING = wx.NewId();
+ID_EXIT = wx.NewId();
+
 def parseXml ():
     tree = ET.parse("../res/NewFile.xml")
     root = tree.getroot()
@@ -72,13 +75,20 @@ class BibTaskBarIcon(wx.TaskBarIcon):
         self.SetIcon(icon, "title")
 
     def CreatePopupMenu(self):
-        self.menu = wx.Menu()
-        self.menu.Append(wx.NewId(), 'G')
-        self.menu.Append(wx.NewId(), 'G')
+        menu = wx.Menu()
+        menu.Append(ID_SETTING, 'Setting')
+        menu.Append(ID_EXIT, 'Exit')
+        self.Bind(wx.EVT_MENU, self.OnSetting, id=ID_SETTING)
+        self.Bind(wx.EVT_MENU, self.OnExit, id=ID_EXIT)
         #EVT_MENU( menu, id, self.MenuSelectionCb )
+        self.menu = menu;
         return self.menu
     
-    
+    def OnSetting(self, event):
+        wx.MessageBox("Setting Box");
+        
+    def OnExit(self, event):
+        self.Destroy()
         
 class Frame(wx.Frame):
     def __init__(self, title):
