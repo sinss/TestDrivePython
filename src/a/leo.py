@@ -6,6 +6,8 @@ Created on Sep 24, 2015
 import xml.etree.ElementTree as ET
 import wx.html
 import sys
+import datetime
+import a.check as CH
 
 def parseXml ():
     tree = ET.parse("../res/NewFile.xml")
@@ -100,14 +102,21 @@ class Frame(wx.Frame):
         panel = wx.Panel(self)
         box = wx.BoxSizer(wx.VERTICAL)
              
+        m_input_title = wx.StaticText(panel, -1, "Employee Id")
+        m_input = wx.TextCtrl(panel, -1, "", size=(300, -1))
+        m_input.SetInsertionPoint(0)
+        
+        box.Add(m_input_title, wx.ALL, 10)
+        box.Add(m_input, wx.ALL, 10)
+        
         m_text = wx.StaticText(panel, -1, "Hello World!")
         m_text.SetFont(wx.Font(14, wx.SWISS, wx.NORMAL, wx.BOLD))
         m_text.SetSize(m_text.GetBestSize())
         box.Add(m_text, 0, wx.ALL, 10)
              
-        m_close = wx.Button(panel, wx.ID_CLOSE, "Close")
-        m_close.Bind(wx.EVT_BUTTON, self.OnClose)
-        box.Add(m_close, 0, wx.ALL, 10)
+        m_submit = wx.Button(panel, wx.ID_CLOSE, "Query")
+        m_submit.Bind(wx.EVT_BUTTON, self.OnSubmit)
+        box.Add(m_submit, 0, wx.ALL, 10)
              
         panel.SetSizer(box)
         panel.Layout()
@@ -120,6 +129,17 @@ class Frame(wx.Frame):
         if result == wx.ID_OK:
             self.Destroy()
             
+    def OnSubmit(self, event):
+        year = datetime.date.today().year
+        mon = datetime.date.today().month
+        day = datetime.date.today().day
+        print("{:0>4d}".format(year))
+        print("{:0>2d}".format(mon))
+        print("{:0>2d}".format(day))
+        print("{:0>2d}{:0>2d}{:0>4d}".format(mon, day, year))
+        dateStr = "{:0>2d}{:0>2d}{:0>4d}".format(mon, day, year)
+        CH.send_request("0540", dateStr)
+        
     def OnAbout(self, event):
         dlg = AboutBox()
         dlg.ShowModal()

@@ -1,6 +1,10 @@
+## -*- coding: utf-8 -*-
+
 import requests
 
-def send_request(val1):
+def send_request(employeeId, dateStr):
+	
+	x = "員工編號".decode('utf-8').encode('big5')
 
 	try:
 		response = requests.post(
@@ -17,10 +21,10 @@ def send_request(val1):
 				"Accept-Language": "en-US,en;q=0.5",
 			},
 			data={
-				"field": val1,
-				"key": "0540",
+				"field": x,
+				"key": employeeId,
 				"act": "search",
-				"file": "09242015",
+				"file": dateStr,
 				"std[]": "0",
 			},
 		)
